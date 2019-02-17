@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>slider</title>
+    <style>
+        * {
+            margin: 0;
+        }
+
+        header {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .slider {
+            position: absolute;
+            min-height: 100%;
+            min-width: 100%;
+            opacity: 0.6;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        h1 {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 0 0 5px white;
+        }
+
+        .dots {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        span {
+            height: 10px;
+            width: 10px;
+            display: inline-block;
+            background-color: white;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .active {
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="img1.jpg" alt="" class="slider" />
+        <h1>Pierwszy tekst</h1>
+        <div class="dots">
+            <span class="active"></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+    <script>
+        const img = document.querySelector(".slider");
+        const h1 = document.querySelector("h1");
+        const dots = [...document.querySelectorAll(".dots span")];
+        let index = 0;
+        let interval;
+        const items = [{
+                src: "img1.jpg",
+                tekst: "Pierwszy tekst"
+            },
+            {
+                src: "img2.jpg",
+                tekst: "Drugi tekst"
+            },
+            {
+                src: "img3.jpg",
+                tekst: "Trzeci tekst"
+            }
+        ];
+
+
+        function changeDots() {
+            let activeDot = dots.findIndex(dot => dot.classList.contains("active"));
+            dots[activeDot].classList.remove("active");
+            dots[index].classList.add("active");
+        }
+
+        function change() {
+            if (index < items.length) {
+                img.src = items[index].src;
+                h1.textContent = items[index].tekst;
+                changeDots();
+                index++;
+            } else {
+                index = 0;
+            }
+        }
+
+
+        interval = setInterval(change, 1000);
+
+        function buttons(e) {
+            if (e.keyCode == 37 || e.keyCode == 39) {
+                e.keyCode == 39 ? index++ : index--
+                clearInterval(interval)
+                if (index == items.length) {
+                    index = 0
+                } else if (index < 0) {
+                    index = items.length - 1
+                }
+                img.src = items[index].src;
+                h1.textContent = items[index].tekst;
+                changeDots();
+                interval = setInterval(change, 1000);
+            }
+        }
+        window.addEventListener('keydown', buttons)
+
+        function clickDot(e) {
+            clearInterval(interval)
+            dots.forEach(dots => dots.classList.remove('active'))
+            e.target.classList.add('active')
+            index = dots.findIndex(dot => dot.classList.contains('active'))
+            img.src = items[index].src;
+            h1.textContent = items[index].tekst;
+            interval = setInterval(change, 1000);
+        }
+
+        dots.forEach(dots => dots.addEventListener('click', clickDot))
+    </script>
+</body>
+
+</html>
