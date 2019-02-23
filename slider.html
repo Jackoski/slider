@@ -44,24 +44,102 @@
         }
 
         span {
-            height: 10px;
-            width: 10px;
+            height: 20px;
+            width: 20px;
             display: inline-block;
-            background-color: white;
+            background-color: black;
             border-radius: 50%;
             cursor: pointer;
         }
 
+        span:hover {
+            background-color: darkslategray;
+        }
+
         .active {
-            background-color: black;
+            background-color: darkslategray;
+        }
+
+        .right {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 10%;
+            background-color: white;
+            opacity: 0;
+            cursor: pointer;
+
+        }
+
+        .left {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 10%;
+            background-color: white;
+            opacity: 0;
+            text-align: center;
+            margin: auto 0;
+            cursor: pointer;
+        }
+
+        .right:hover {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 10%;
+            background-color: white;
+            opacity: 0.2;
+
+        }
+
+        .left:hover {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 10%;
+            background-color: white;
+            opacity: 0.2;
+        }
+
+        .first {
+            position: absolute;
+            border: solid black;
+            border-width: 0 3px 3px 0;
+            padding: 50px;
+            top: 40%;
+            right: 40%;
+            transform: rotate(-45deg)
+        }
+
+        .four {
+            position: absolute;
+            border: solid black;
+            border-width: 0 3px 3px 0;
+            padding: 50px;
+            top: 40%;
+            left: 40%;
+            transform: rotate(135deg)
         }
     </style>
 </head>
 
 <body>
     <header>
+
         <img src="img1.jpg" alt="" class="slider" />
+        <div class="right">
+            <div class="first"></div>
+        </div>
+        <div class="left">
+            <div class="four"></div>
+        </div>
         <h1>Pierwszy tekst</h1>
+
         <div class="dots">
             <span class="active"></span>
             <span></span>
@@ -69,10 +147,12 @@
         </div>
     </header>
     <script>
+        const left = document.querySelector('.left')
+        const right = document.querySelector('.right')
         const img = document.querySelector(".slider");
         const h1 = document.querySelector("h1");
         const dots = [...document.querySelectorAll(".dots span")];
-        let index = 0;
+        let number = 0;
         let interval;
         const items = [{
                 src: "img1.jpg",
@@ -87,56 +167,81 @@
                 tekst: "Trzeci tekst"
             }
         ];
-
-
-        function changeDots() {
-            let activeDot = dots.findIndex(dot => dot.classList.contains("active"));
-            dots[activeDot].classList.remove("active");
-            dots[index].classList.add("active");
+        const changeDots = () => {
+            dots.forEach(dot => dot.classList.remove('active'))
+            dots[number].classList.add('active')
         }
 
-        function change() {
-            if (index < items.length) {
-                img.src = items[index].src;
-                h1.textContent = items[index].tekst;
-                changeDots();
-                index++;
+        const change = () => {
+            if (number < items.length) {
+                img.src = items[number].src
+                h1.textContent = items[number].tekst
+                changeDots()
+                number++
             } else {
-                index = 0;
+                number = 0
             }
         }
-
-
         interval = setInterval(change, 1000);
-
-        function buttons(e) {
-            if (e.keyCode == 37 || e.keyCode == 39) {
-                e.keyCode == 39 ? index++ : index--
+        const keyChange = (e) => {
+            if (e.keyCode == 39 || e.keyCode == 37) {
+                e.keyCode == 39 ? number++ : number--
                 clearInterval(interval)
-                if (index == items.length) {
-                    index = 0
-                } else if (index < 0) {
-                    index = items.length - 1
+                if (number == items.length) {
+                    number = 0
+                } else if (number < 0) {
+                    number = items.length - 1
                 }
-                img.src = items[index].src;
-                h1.textContent = items[index].tekst;
-                changeDots();
-                interval = setInterval(change, 1000);
+
+                img.src = items[number].src
+                h1.textContent = items[number].tekst
+                changeDots()
+                setInterval(interval, 1000)
             }
         }
-        window.addEventListener('keydown', buttons)
-
-        function clickDot(e) {
+        const changeEvry = (e) => {
             clearInterval(interval)
-            dots.forEach(dots => dots.classList.remove('active'))
+            dots.forEach(dot => dot.classList.remove('active'))
             e.target.classList.add('active')
-            index = dots.findIndex(dot => dot.classList.contains('active'))
-            img.src = items[index].src;
-            h1.textContent = items[index].tekst;
-            interval = setInterval(change, 1000);
+            let number = dots.findIndex(dot => dot.classList.contains('active'))
+            img.src = items[number].src
+            h1.textContent = items[number].tekst
+            interval = setInterval(change, 1000)
         }
+        const leftArrow = () => {
+            clearInterval(interval)
+            img.src = items[number].src
+            h1.textContent = items[number].tekst
+            changeDots()
+            number--
+            if (number < 0) {
+                number = items.length - 1
+            }
 
-        dots.forEach(dots => dots.addEventListener('click', clickDot))
+            img.src = items[number].src
+            h1.textContent = items[number].tekst
+            changeDots()
+            interval = setInterval(change, 1000)
+        }
+        const rightArrow = () => {
+            clearInterval(interval)
+            img.src = items[number].src
+            h1.textContent = items[number].tekst
+            changeDots()
+            number++
+            if (number == items.length) {
+                number = 0
+            }
+
+            img.src = items[number].src
+            h1.textContent = items[number].tekst
+            changeDots()
+            interval = setInterval(change, 1000)
+        }
+        window.addEventListener('keydown', keyChange)
+        dots.forEach(dot => dot.addEventListener('click', changeEvry))
+        left.addEventListener('click', leftArrow)
+        right.addEventListener('click', rightArrow)
     </script>
 </body>
 
