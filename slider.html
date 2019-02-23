@@ -47,17 +47,17 @@
             height: 20px;
             width: 20px;
             display: inline-block;
-            background-color: black;
+            background-color: darkslategray;
             border-radius: 50%;
             cursor: pointer;
         }
 
         span:hover {
-            background-color: darkslategray;
+            background-color: black;
         }
 
         .active {
-            background-color: darkslategray;
+            background-color: black;
         }
 
         .right {
@@ -173,37 +173,47 @@
         }
 
         const change = () => {
-            if (number < items.length) {
+            number++
+            if (number == items.length) {
+                number = 0
                 img.src = items[number].src
                 h1.textContent = items[number].tekst
                 changeDots()
-                number++
-            } else {
-                number = 0
             }
+            img.src = items[number].src
+            h1.textContent = items[number].tekst
+            changeDots()
+
+
         }
         interval = setInterval(change, 1000);
         const keyChange = (e) => {
             if (e.keyCode == 39 || e.keyCode == 37) {
-                e.keyCode == 39 ? number++ : number--
                 clearInterval(interval)
+                e.keyCode == 39 ? ++number : --number
                 if (number == items.length) {
                     number = 0
+                    img.src = items[number].src
+                    h1.textContent = items[number].tekst
+                    changeDots()
                 } else if (number < 0) {
                     number = items.length - 1
+                    console.log(number)
+                    img.src = items[number].src
+                    h1.textContent = items[number].tekst
+                    changeDots()
                 }
-
                 img.src = items[number].src
                 h1.textContent = items[number].tekst
                 changeDots()
-                setInterval(interval, 1000)
+                interval = setInterval(change, 1000)
             }
         }
-        const changeEvry = (e) => {
+        const clickDot = (e) => {
             clearInterval(interval)
             dots.forEach(dot => dot.classList.remove('active'))
             e.target.classList.add('active')
-            let number = dots.findIndex(dot => dot.classList.contains('active'))
+            number = dots.findIndex(dot => dot.classList.contains('active'))
             img.src = items[number].src
             h1.textContent = items[number].tekst
             interval = setInterval(change, 1000)
@@ -239,7 +249,7 @@
             interval = setInterval(change, 1000)
         }
         window.addEventListener('keydown', keyChange)
-        dots.forEach(dot => dot.addEventListener('click', changeEvry))
+        dots.forEach(dot => dot.addEventListener('click', clickDot))
         left.addEventListener('click', leftArrow)
         right.addEventListener('click', rightArrow)
     </script>
