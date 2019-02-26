@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+}
+
+header {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.slider {
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+    opacity: 0.6;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+h1 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 0 0 5px white;
+}
+
+.dots {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+span {
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    background-color: darkslategray;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+span:hover {
+    background-color: black;
+}
+
+.active {
+    background-color: black;
+}
+
+.right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 10%;
+    background-color: white;
+    opacity: 0;
+    cursor: pointer;
+
+}
+
+.left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 10%;
+    background-color: white;
+    opacity: 0;
+    text-align: center;
+    margin: auto 0;
+    cursor: pointer;
+}
+
+.right:hover {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 10%;
+    background-color: white;
+    opacity: 0.2;
+
+}
+
+.left:hover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 10%;
+    background-color: white;
+    opacity: 0.2;
+}
+
+.first {
+    position: absolute;
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    padding: 50px;
+    top: 40%;
+    right: 40%;
+    transform: rotate(-45deg)
+}
+
+.four {
+    position: absolute;
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    padding: 50px;
+    top: 40%;
+    left: 40%;
+    transform: rotate(135deg)
+}
